@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>ELECTRA | Suraj Parmar</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="ELECTRA" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Electrifying The Training" />
+<meta property="og:description" content="Electrifying The Training" />
+<link rel="canonical" href="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html" />
+<meta property="og:url" content="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html" />
+<meta property="og:site_name" content="Suraj Parmar" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-14T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Electrifying The Training","dateModified":"2020-04-14T00:00:00-05:00","datePublished":"2020-04-14T00:00:00-05:00","headline":"ELECTRA","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html"},"url":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/suraj-parmar/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://parmarsuraj99.github.io/suraj-parmar/feed.xml" title="Suraj Parmar" /><link rel="shortcut icon" type="image/x-icon" href="/suraj-parmar/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>ELECTRA | Suraj Parmar</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="ELECTRA" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Electrifying The Training" />
+<meta property="og:description" content="Electrifying The Training" />
+<link rel="canonical" href="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html" />
+<meta property="og:url" content="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html" />
+<meta property="og:site_name" content="Suraj Parmar" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-04-14T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Electrifying The Training","dateModified":"2020-04-14T00:00:00-05:00","datePublished":"2020-04-14T00:00:00-05:00","headline":"ELECTRA","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html"},"url":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://parmarsuraj99.github.io/suraj-parmar/feed.xml" title="Suraj Parmar" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/suraj-parmar/">Suraj Parmar</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/suraj-parmar/about/">About Me</a><a class="page-link" href="/suraj-parmar/search/">Search</a><a class="page-link" href="/suraj-parmar/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">ELECTRA</h1><p class="page-description">Electrifying The Training</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-04-14T00:00:00-05:00" itemprop="datePublished">
+        Apr 14, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      7 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/suraj-parmar/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/suraj-parmar/categories/#NLP">NLP</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/parmarsuraj99/suraj-parmar/tree/master/_notebooks/2020-04-14-ELECTRA.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/suraj-parmar/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/parmarsuraj99/suraj-parmar/master?filepath=_notebooks%2F2020-04-14-ELECTRA.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/suraj-parmar/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/parmarsuraj99/suraj-parmar/blob/master/_notebooks/2020-04-14-ELECTRA.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/suraj-parmar/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Language-Modelling">Language Modelling </a></li>
+<li class="toc-entry toc-h2"><a href="#Masked-Language-Modelling">Masked Language Modelling </a></li>
+<li class="toc-entry toc-h2"><a href="#Generative-Training">Generative Training </a></li>
+<li class="toc-entry toc-h2"><a href="#Electrifying-the-training">Electrifying the training </a></li>
+<li class="toc-entry toc-h2"><a href="#search_exclude:-true">search_exclude: true </a></li>
+<li class="toc-entry toc-h1"><a href="#Posts">Posts </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-04-14-ELECTRA.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If you are interested in Deep Learning (especially NLP), then you might have heard of BERT and its friends(bigger and smaller ones!). At the heart of these models is a very "Attention" seeking architecture called "Transformer".</p>
+<p><a href="https://openreview.net/pdf?id=r1xMH1BtvB">ELECTRA</a> released by Google in March 2020, uses a novel approach for training on corpora. Unlike BERT and co.</p>
+<p>To understand this, we must first explore two ideas:</p>
+<ul>
+<li>How language models(using Transformers) learn</li>
+<li>An overview of Generative models(GAN training)</li>
+</ul>
+<p>but before diving into these, Let's have a rough idea of Deep Learning in NLP.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Representing Words in numbers</strong></p>
+<p>A word must be represented as a vector before feeding it to a deep learning model. This can be done using so many ways (one-hot encoding, Word2Vec, pretrained embeddings). Think of this as a vocabulary of <strong>N</strong> words, and every word represented using a <strong>d</strong> dimensional vector.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Language-Modelling">
+<a class="anchor" href="#Language-Modelling" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Language Modelling</strong><a class="anchor-link" href="#Language-Modelling"> </a>
+</h2>
+<p>We can think deep learning models as Universal Function approximators, So how do they learn the langugage? how they represent? Turns out, we can train them by asking them to predict the next word in a sentence by using the context of previous words.</p>
+<p>Let's do a small exercise. Try to predict the next word.</p>
+<ol>
+<li>During this pandemic of COVID-19, Everyone should wear a ... .</li>
+<li>Because of the dress code, Everyone should wear a ... .</li>
+</ol>
+<p>For the first, the probability of the word 'mask' is very high. (Although, It should be complete 1. Stay Safe!)</p>
+<p>and for the second one, maybe a type of clothing.</p>
+<p>So, this is called <strong>Language Modelling(LM)</strong>, in which we try to learn the language(structure, semantics and hopefully everything) mathematically by predicting next word using previous words(context).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Masked-Language-Modelling">
+<a class="anchor" href="#Masked-Language-Modelling" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Masked Language Modelling</strong><a class="anchor-link" href="#Masked-Language-Modelling"> </a>
+</h2>
+<p>Is predicting <em>next</em> word the only way to learn? Not really,
+BERT used something called MLM(Masked Language Modelling).</p>
+<p>Unlike sequential models(RNN, LSTM, GRU) which takes one word at a timestep, Transformer Encoder of BERT can take entire sequence of input together and process it. so there's no meaning of predicting next word, as the next word would be exposed to internally. This led to masked tokens. Randomly, replacing 15% of tokens with "[MASK]" token and asking model to predict the most probable word for "[MASK]"</p>
+<ol>
+<li>During this pandemic of COVID-19, Everyone should <strong>[MASK]</strong> a mask.</li>
+<li>Because of the dress code, Everyone should <strong>[MASK]</strong> traditional clothes at party.</li>
+</ol>
+<p>Now, The model has to predict the probability distribution over vocabulary to get the maximum likely words in place of masked words. Thus, the task is called <strong>Masked</strong> Language modelling.</p>
+<p>This approach of BERT achieved SotA in so many tasks.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This can be seen as a denoising autoencoder task. In which, the model is given an input with noise, and it has to output a denoised/cleaned representation of input(here, input:masked sentences. output: predictions for masks. thus, recovered output).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Generative-Training">
+<a class="anchor" href="#Generative-Training" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Generative Training</strong><a class="anchor-link" href="#Generative-Training"> </a>
+</h2>
+<p>You might have heard of GAN(Generative Adversarial Networks). There is a generator and a discriminator. You can think of this as a game of "chor(thief)-police".</p>
+<p>Generator: Generate samples that are so realistic from a distribution of input samples and the goal here is to fool the discriminator. (chor)</p>
+<p>Discriminator: Criticize the output generated by the generator about whether it is a real or a fake sample. (police)</p>
+<p>The training is interesting! The better either one gets, other also improves!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Electrifying-the-training">
+<a class="anchor" href="#Electrifying-the-training" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Electrifying the training</strong><a class="anchor-link" href="#Electrifying-the-training"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We refreshed the ideas of MLM and GANs, but how they relate to ELECTRA. Turns out very much. ELECTRA introduced a new learning methodology called "<strong>replaced token detection</strong>". You get a rough idea of what it could be. The input is again corrupted but instead of masking, the tokens are replaced by other tokens. and the task is to detect whether a token(a word represented by a number) is genuine or corrupted(real or fake). A new self-supervised task for language representation learning.</p>
+<p>Now comes the GAN part. MLM trains model as a generator, while replaced token detection trains as a discriminator. The advantage is that the model gets to learn from all tokens, not just the masked out small sub-set. However, one thing to note here is that the training is not adversarial. The model is trained with maximum likelihood rather than adversarial loss due to the difficulty of applying GAN to text.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, what does ELECTRA stands for? "<strong>Efficiently Learning an Encoder that Classifies Token Replacements Accurately</strong>"</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/training_progress.png" alt="" style="max-width: 700px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>As we can observe from the training progress, The ELECTRA seems to <strong>converge faster</strong>. The reason is that the model is learning from all the tokens, thus it gets more ideas of tokens and the language compared to MLM tasks. This seems more robust. Look at the image on right, ELECTRA matched similar performances of RoBERTa and XLNet with about 25% of the compute! (FAST)</p>
+<p>This is about the discriminator, but what about the generator(how to get the corrupted tokens). Should we do it manually? The GAN approach is at the rescue. We can use a generator model(preferably small) and ask it to predict a distribution(probability) over tokens and then the new tokens can be fed to the discriminator.</p>
+<p>From where do the replacements come? You guessed right. A generator to adultrate the inputs. A small model that can give distribution over tokens can be used. 
+Authors have used a BERT-small as a generator on a Masked Language Modelling task. (reminder, it is trained on maximum likelihood, instead of a adverserial loss.) Another observation, The Generator isn't given a noise vector as input like GANs are given.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/gan_like.png" alt="" style="max-width: 700px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Around 15% of the tokens are masked. The outputs of Generator is fed to Discriminator. Thus we have can diffrentiate between a real(not masked) and a corrupted(masked and predicted by Generator) tokens on which the Discriminator can be trained(on a loss function).</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, is the discriminator always distinguishes on 15% of the tokens that are corrupted? No.</p>
+<p>Isn't the goal of MLM is to generate correct words? and won't this lead to only real tokens for descriminator? Yes. If the generator outputs correct word then it is considered "real" when fed to the discriminator. Authors found this formulation to perform better on downstream tasks.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>LOSS(ES)</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Generator loss:</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/loss_g.png" alt="" style="max-width: 400px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>let's take an example,</p>
+<p>vocabulary: [During, this, pandemic, everyone, should, wear, a, mask, and, take, care, of, themselves]</p>
+<p>inputG: During this pandemic, Everyone should [mask] a mask and take [mask] of themselves.</p>
+<p>outputG:</p>
+<p>[MASK]1: [0.06253422, 0.10410041, 0.0609353 , 0.0611319 , 0.07645429,
+       0.0834228 , 0.05501198, 0.09041031, 0.06122133, 0.09231945,
+       0.05474751, 0.0673528 , 0.1303577 ],
+        a probability distribution over every token in <strong>vocabulary</strong>. here, the selected token would be "themselves"</p>
+<p>for [mask]1: where the answer should be "wear", so probability of "wear" should be high but the output is "themselves".so the sentence that will be fed to Discriminator will be.</p>
+<p>corrupted sentence: During this pandemic, Everyone should <strong>themselves</strong> a mask and take <strong>care</strong> of themselves.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Discriminator Loss</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/loss_d.png" alt="" style="max-width: 800px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>inputD: During this pandemic, Everyone should <strong>themselves</strong> a mask and take <strong>care</strong> of themselves.</p>
+<p>outputD:[0, 0, 0, 0, 0, <strong>1</strong>, 0, 0, 0, <strong>0</strong>, 0, 0]</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Combined loss</strong></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/loss_combined.png" alt="" style="max-width: 400px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>NOTE: Backpropagation updates from this loss isn't done on generator.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This has resulted in a very good performance in so many benchmarks. It achieves State-of-the-art results in SQuAD 2.0.</p>
+<p>The released code is very simple to train on GPU and you can explore more using Colab. Three pre-trained models ELECTRA-small, ELECTRA-base, and ELECTRA-Large are also released.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, if you want to train or fine-tune your own models, checkout <a href="%22https://github.com/google-research/electra%22">https://github.com/google-research/electra</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I will be sharing my colab notebook with this. Hope this effort to explain helped you.</p>
+<p>Stay tuned. Take care and stay safe.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><figure>
+  
+    <img class="docimage" src="/suraj-parmar/images/copied_from_nb/../images/electra/training_eta_cropped.png" alt="" style="max-width: 600px">
+    
+    
+</figure>
+</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Acknowledgments:</strong>
+Thanks to <a href="https://twitter.com/mrm8488">Manu Romero</a> for suggeting ELECTRA for my model</p>
+<p>Currently, Working on Language models for Indian Languages (Gujarati, Samskrit, and Hindi as of now). I will upload the code soon. Looking forward for suggestions and feedback.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>References</strong></p>
+<ul>
+<li>
+<p><a href="https://ai.googleblog.com/2020/03/more-efficient-nlp-model-pre-training.html">Google Blog on ELECTRA</a></p>
+</li>
+<li>
+<p><a href="https://openreview.net/pdf?id=r1xMH1BtvB">ELECRTA Paper</a></p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1810.04805">BERT</a></p>
+</li>
+<li>
+<p><a href="https://arxiv.org/abs/1706.03762">Attention is all you need</a></p>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr>
+<p>layout: home</p>
+<h2 id="search_exclude:-true">
+<a class="anchor" href="#search_exclude:-true" aria-hidden="true"><span class="octicon octicon-link"></span></a>search_exclude: true<a class="anchor-link" href="#search_exclude:-true"> </a>
+</h2>
+<p>Hello, I am Suraj Parmar. I love to explain things I know. This help me to improve and test my understanding. I am setting up this blog in fastpages. I have written previously on <a href="https://medium.com/@parmarsuraj99">Medium</a> here.</p>
+<p>Machine Learning is what excites me to learn and share.</p>
+<p>Stay tuned and stay safe.</p>
+<p>This site is built with <a href="https://github.com/fastai/fastpages">fastpages</a>, An easy to use blogging platform with extra features for Jupyter Notebooks.</p>
+<h1 id="Posts">
+<a class="anchor" href="#Posts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Posts<a class="anchor-link" href="#Posts"> </a>
+</h1>
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="parmarsuraj99/suraj-parmar"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/suraj-parmar/jupyter/nlp/2020/04/14/ELECTRA.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/suraj-parmar/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/suraj-parmar/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Committing to ML, One post at a time.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/parmarsuraj99" title="parmarsuraj99"><svg class="svg-icon grey"><use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/parmarsuraj99" title="parmarsuraj99"><svg class="svg-icon grey"><use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
