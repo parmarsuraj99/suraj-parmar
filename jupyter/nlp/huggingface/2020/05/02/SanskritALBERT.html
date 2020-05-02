@@ -343,7 +343,7 @@ window.onload = wrap_img;
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="https://www.kaggle.com/disisbig/sanskrit-wikipedia-articles">Kaggle dataset link</a></p>
-<p>Thanks to <a href="https://github.com/goru001/inltk">inltk</a> fro wikipedia dumps
+<p>Thanks to <a href="https://github.com/goru001/inltk">inltk</a> for wikipedia dumps
 and <a href="https://github.com/cltk/cltk">CLTK</a> from which I am currently collecting Sanskrit scraps from open sources.</p>
 
 </div>
@@ -653,7 +653,7 @@ Do search the quotes used in this notebook, I am sure, you will love them!</p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The tokenizer ssems to work, But since, The training script is configured to use Albert tokenizer. we need to use spiece.model and spiece.vocab, for training script</p>
+<p>The tokenizer seems to work, But since, The training script is configured to use Albert tokenizer. we need to use spiece.model and spiece.vocab, for training script</p>
 <p>HuggingFace tokenizer creates <code>['/content/hft/vocab.json', '/content/hft/merges.txt']</code></p>
 <p>files, while the AlbertTokenizer requires spiece.model file. So we'll use sentencepiece saved vocab and tokenizer model</p>
 
@@ -1222,7 +1222,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">atokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"क्षमया दयया प्रेम्णा सूनृतेनार्जवेन च। वशीकुर्याज्जगत्सर्वं विनयेन च सेवया॥"</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">atokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । मृत्योर्मा अमृतं गमय । ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">atokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">))</span>
 </pre></div>
 
@@ -1236,7 +1236,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[CLS] क्षमया दयया प्रेम्णा सूनृतेनार्जवेन च। वशीकुर्याज्जगत्सर्वं विनयेन च सेवया॥[SEP]
+<pre>[CLS] ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । मृत्योर्मा अमृतं गमय । ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]
 </pre>
 </div>
 </div>
@@ -1513,7 +1513,7 @@ but I won't upload this as I have alreasy uploaded one.</p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And It's done! Since, I have alreadu uploaded a model, You can load using <code>surajp/sanskrit-base-albert</code></p>
+<p>And It's done! Since, I have already uploaded a model, You can load using <code>surajp/sanskrit-base-albert</code></p>
 
 </div>
 </div>
@@ -1619,23 +1619,6 @@ but I won't upload this as I have alreasy uploaded one.</p>
 </div>
     
 
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">"./"</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-    
-
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1651,7 +1634,7 @@ but I won't upload this as I have alreasy uploaded one.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This training contained only a little portion of Sanskrit literature. There is a vast amount of literature there which I am collecting. This was only a checkpoint for trainng, I will train more once I collect more data.</p>
 <p>I am also trainig for other Indian Languages on different models (Gujarati, Hindi for now).</p>
-<p>If you know any resources, Please write to me. I'd love to have your contribution.</p>
+<p>If you know any resources, Please write to me.</p>
 <p><strong><code>parmarsuraj99@gmail.com</code></strong></p>
 
 </div>
