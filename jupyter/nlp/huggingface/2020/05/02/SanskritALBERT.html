@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sanskrit Albert | Suraj Parmar</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Sanskrit Albert" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!" />
+<meta property="og:description" content="Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!" />
+<link rel="canonical" href="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html" />
+<meta property="og:url" content="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html" />
+<meta property="og:site_name" content="Suraj Parmar" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-02T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!","@type":"BlogPosting","headline":"Sanskrit Albert","url":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html","datePublished":"2020-05-02T00:00:00-05:00","dateModified":"2020-05-02T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/suraj-parmar/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://parmarsuraj99.github.io/suraj-parmar/feed.xml" title="Suraj Parmar" /><link rel="shortcut icon" type="image/x-icon" href="/suraj-parmar/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Sanskrit Albert | Suraj Parmar</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Sanskrit Albert" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!" />
+<meta property="og:description" content="Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!" />
+<link rel="canonical" href="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html" />
+<meta property="og:url" content="https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html" />
+<meta property="og:site_name" content="Suraj Parmar" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-05-02T00:00:00-05:00" />
+<script type="application/ld+json">
+{"description":"Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!","@type":"BlogPosting","headline":"Sanskrit Albert","url":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html","datePublished":"2020-05-02T00:00:00-05:00","dateModified":"2020-05-02T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://parmarsuraj99.github.io/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://parmarsuraj99.github.io/suraj-parmar/feed.xml" title="Suraj Parmar" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head><body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/suraj-parmar/">Suraj Parmar</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/suraj-parmar/about/">About Me</a><a class="page-link" href="/suraj-parmar/search/">Search</a><a class="page-link" href="/suraj-parmar/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Sanskrit Albert</h1><p class="page-description">Training a Language model from scratch on Sanskrit using the HuggingFace library, and how to train your own model too!</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-05-02T00:00:00-05:00" itemprop="datePublished">
+        May 2, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      9 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/suraj-parmar/categories/#jupyter">jupyter</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/suraj-parmar/categories/#NLP">NLP</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/suraj-parmar/categories/#HuggingFace">HuggingFace</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/parmarsuraj99/suraj-parmar/tree/master/_notebooks/2020-05-02-SanskritALBERT.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/suraj-parmar/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/parmarsuraj99/suraj-parmar/master?filepath=_notebooks%2F2020-05-02-SanskritALBERT.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/suraj-parmar/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/parmarsuraj99/suraj-parmar/blob/master/_notebooks/2020-05-02-SanskritALBERT.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/suraj-parmar/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#Collecting-Corpus">Collecting Corpus </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Loading-From-kaggle">Loading From kaggle </a></li>
+<li class="toc-entry toc-h2"><a href="#Tokenizer-Training">Tokenizer Training </a></li>
+<li class="toc-entry toc-h2"><a href="#Testing-Tokenizer">Testing Tokenizer </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#Huggingface-Training">Huggingface Training </a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#Model-Tokenizer-Configurtion">Model-Tokenizer Configurtion </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#Saving-for-Uploading">Saving for Uploading </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Tests">Tests </a></li>
+<li class="toc-entry toc-h2"><a href="#Uploading-to-Models">Uploading to Models </a></li>
+</ul>
+</li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-05-02-SanskritALBERT.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://colab.research.google.com/github/parmarsuraj99/suraj-parmar/blob/master/_notebooks/2020-05-02-SanskritALBERT.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://colab.research.google.com/drive/1jL1ankzsNLlnQbACZVkGyOYHDgZxeSEg">Colab Link</a>
+(Just to make sure, latest version)</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>nvidia-smi
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Sat May  2 06:43:02 2020       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 440.64.00    Driver Version: 418.67       CUDA Version: 10.1     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|===============================+======================+======================|
+|   0  Tesla P4            Off  | 00000000:00:04.0 Off |                    0 |
+| N/A   31C    P8     7W /  75W |      0MiB /  7611MiB |      0%      Default |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                       GPU Memory |
+|  GPU       PID   Type   Process name                             Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>HuggingFace Recently updated their scripts, and the pip is yet to be released. So We'll build from source</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>pip install tokenizers
+<span class="c1">#!pip install transformers</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>git clone https://github.com/huggingface/transformers
+<span class="o">!</span>pip install transformers/.
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Collecting-Corpus">
+<a class="anchor" href="#Collecting-Corpus" aria-hidden="true"><span class="octicon octicon-link"></span></a>Collecting Corpus<a class="anchor-link" href="#Collecting-Corpus"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I have used Sanskrit Corpus from Kaggle dataset. Feel free to skip and use your own ddataset. The trainig data needs to be in a .txt file. and I have also used Evaluation using the same dataset.</p>
+<p>I need Kaggle API to download the dataset. You can load your text corpus from anywhere.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You can download corpus for your language from <a href="https://traces1.inria.fr/oscar">https://traces1.inria.fr/oscar</a>.</p>
+<p>I have used data fro mthere too, and appended the data to corpus from Kaggle.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Loading-From-kaggle">
+<a class="anchor" href="#Loading-From-kaggle" aria-hidden="true"><span class="octicon octicon-link"></span></a>Loading From kaggle<a class="anchor-link" href="#Loading-From-kaggle"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir -p ~/.kaggle
+<span class="o">!</span>cp kaggle.json ~/.kaggle/ 
+<span class="o">!</span>chmod <span class="m">600</span> ~/.kaggle/kaggle.json 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir corpus #directory <span class="k">for</span> <span class="nv">sac</span><span class="o">=</span>ving all corpus in a single directory. You can save it anywhere
+
+<span class="c1">#From Kagle</span>
+<span class="o">!</span>kaggle datasets download -d disisbig/sanskrit-wikipedia-articles
+<span class="o">!</span>unzip /content/sanskrit-wikipedia-articles.zip -d /content/corpus
+
+<span class="c1">#From OSCAR corpus</span>
+<span class="o">!</span>wget https://traces1.inria.fr/oscar/files/compressed-orig/sa.txt.gz
+<span class="o">!</span>gunzip /content/sa.txt.gz
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Reading sample</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/sa.txt"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1000</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="n">train_list</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"/content/corpus/train/train/*.txt"</span><span class="p">)</span>
+<span class="n">valid_list</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"/content/corpus/valid/valid/*.txt"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#readig and appending all small files to single Train and Valid files</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/train/full.txt"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">train_list</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/sa.txt"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/valid/full_val.txt"</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">valid_list</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">infile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Tokenizer-Training">
+<a class="anchor" href="#Tokenizer-Training" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tokenizer Training<a class="anchor-link" href="#Tokenizer-Training"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Directory to save trained tokenier and configuration files in a folder</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir data_dir
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sentencepiece</span> <span class="k">as</span> <span class="nn">spm</span>
+<span class="kn">from</span> <span class="nn">tokenizers</span> <span class="kn">import</span> <span class="n">SentencePieceBPETokenizer</span><span class="p">,</span> <span class="n">BertWordPieceTokenizer</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+
+<span class="c1">#Albert Tokenizer uses Sentence piece Tokenization, so I have used sentencepiece to to train tokenizer.</span>
+<span class="c1">#This will take a while</span>
+<span class="n">spm</span><span class="o">.</span><span class="n">SentencePieceTrainer</span><span class="o">.</span><span class="n">Train</span><span class="p">(</span><span class="s1">'--input=/content/corpus/train/full.txt </span><span class="se">\</span>
+<span class="s1">                                --model_prefix=m </span><span class="se">\</span>
+<span class="s1">                                --vocab_size=32000 </span><span class="se">\</span>
+<span class="s1">                                --control_symbols=[CLS],[SEP],[MASK]'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"m.vocab"</span><span class="p">)</span> <span class="k">as</span> <span class="n">v</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2000</span><span class="p">))</span>
+    <span class="n">v</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir /content/data_dir/
+<span class="o">!</span>cp /content/m.model -d /content/data_dir/spiece.model
+<span class="o">!</span>cp /content/m.vocab -d /content/data_dir/spiece.vocab
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>mkdir: cannot create directory ‘/content/data_dir/’: File exists
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Testing-Tokenizer">
+<a class="anchor" href="#Testing-Tokenizer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing Tokenizer<a class="anchor-link" href="#Testing-Tokenizer"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Make sure to checkout the Fast Tokenizers from Huggingface, Tis is really Fast!
+You can compare with sentencepiece.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">time</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">SentencePieceBPETokenizer</span><span class="p">()</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="s2">"/content/corpus/train/full.txt"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>CPU times: user 4 µs, sys: 0 ns, total: 4 µs
+Wall time: 10 µs
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is a very beautiful Shlok ❤️, Let's just pray for this 🙏.
+Do search online if you are interested!</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">txt</span> <span class="o">=</span> <span class="s2">"ॐ सर्वेत्र सुखिनः सन्तु| सर्वे सन्तु निरामयाः| सर्वे भद्राणि पश्यन्तु| माँ कश्चिद् दुःख माप्नुयात॥ ॐ शांतिः शांतिः शांतिः ॥"</span>
+<span class="n">enc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">enc</span><span class="o">.</span><span class="n">ids</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>ॐ सर्वेत्र सुखिनः सन्तु| सर्वे सन्तु निरामयाः| सर्वे भद्राणि पश्यन्तु| माँ कश्चिद् दुःख माप्नुयात॥ ॐ शांतिः शांतिः शांतिः ॥
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The tokenizer ssems to work, But since, The training script is configured to use Albert tokenizer. we need to use spiece.model and spiece.vocab, for training script</p>
+<p>HuggingFace tokenizer creates <code>['/content/hft/vocab.json', '/content/hft/merges.txt']</code></p>
+<p>files, while the AlbertTokenizer requires spiece.model file. So we'll use sentencepiece saved vocab and tokenizer model</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir hft
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"/content/hft"</span><span class="p">)</span>
+<span class="c1">#we won't be using this</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['/content/hft/vocab.json', '/content/hft/merges.txt']</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Huggingface-Training">
+<a class="anchor" href="#Huggingface-Training" aria-hidden="true"><span class="octicon octicon-link"></span></a>Huggingface Training<a class="anchor-link" href="#Huggingface-Training"> </a>
+</h1>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Keep in mind, This is a tokenizer for Albert, unlike the previous one, which is a generic one.</span>
+<span class="c1">#We'll load it in the form of Albert Tokenizer.</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AlbertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"/content/data_dir"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>'[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]'</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Model-Tokenizer-Configurtion">
+<a class="anchor" href="#Model-Tokenizer-Configurtion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model-Tokenizer Configurtion<a class="anchor-link" href="#Model-Tokenizer-Configurtion"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is important.
+The training script needs a configuration for the model.</p>
+<p>Architecture refers to what the model is going to be used for\
+i.e., AlbertModelForLM, or for Sequence Classification.
+Just take a look ar left panel for Model Architectures</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Checking vocabulary size</span>
+<span class="n">vocab_size</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">vocab_size</span> <span class="p">;</span> <span class="n">vocab_size</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>32000</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"architectures"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"AlbertModel"</span>
+    <span class="p">],</span>
+	<span class="s2">"attention_probs_dropout_prob"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+	<span class="s2">"hidden_act"</span><span class="p">:</span> <span class="s2">"gelu"</span><span class="p">,</span>
+	<span class="s2">"hidden_dropout_prob"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+	<span class="s2">"hidden_size"</span><span class="p">:</span> <span class="mi">768</span><span class="p">,</span>
+	<span class="s2">"initializer_range"</span><span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
+	<span class="s2">"intermediate_size"</span><span class="p">:</span> <span class="mi">3072</span><span class="p">,</span>
+	<span class="s2">"layer_norm_eps"</span><span class="p">:</span> <span class="mf">1e-05</span><span class="p">,</span>
+	<span class="s2">"max_position_embeddings"</span><span class="p">:</span> <span class="mi">514</span><span class="p">,</span>
+	<span class="s2">"model_type"</span><span class="p">:</span> <span class="s2">"albert"</span><span class="p">,</span>
+	<span class="s2">"num_attention_heads"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+	<span class="s2">"num_hidden_layers"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+	<span class="s2">"type_vocab_size"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+	<span class="s2">"vocab_size"</span><span class="p">:</span> <span class="n">vocab_size</span>
+<span class="p">}</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/data_dir/config.json"</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+
+
+<span class="c1">#Configuration for tokenizer.</span>
+<span class="c1">#Note I havve set do_lower_case: False, and keep_accents:True</span>
+
+<span class="n">tokenizer_config</span> <span class="o">=</span> <span class="p">{</span>
+	<span class="s2">"max_len"</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
+	<span class="s2">"model_type"</span><span class="p">:</span> <span class="s2">"albert"</span><span class="p">,</span>
+	<span class="s2">"do_lower_case"</span><span class="p">:</span><span class="kc">False</span><span class="p">,</span> 
+	<span class="s2">"keep_accents"</span><span class="p">:</span><span class="kc">True</span>
+<span class="p">}</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/data_dir/tokenizer_config.json"</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tokenizer_config</span><span class="p">,</span> <span class="n">fp</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Note: </strong>While experimenting with tokenizer training, I found that encoding was done corectly, but when decoding with {do_lower_case: True, and keep_accents:False}, the decoded sentence was a bit changed.</p>
+<p>So, by using above settings, I got the sentences decoded perfectly. 
+a reason maybe that Sanskrit does not have 'Casing'. and the word has suffixes in the form of accents.</p>
+<p>You should try with the settings ehich suits best for your langugae.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+<span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>157</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Creating a small corpus for testing, You can skip this.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/train/tmp.txt"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/train/full.txt"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">100000</span><span class="p">))</span>      <span class="c1">#250KB</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/valid/val_val.txt"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">fp</span><span class="p">:</span>
+    <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">"/content/corpus/valid/full_val.txt"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">10000000</span><span class="p">))</span> <span class="c1">#</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Checkpointing is very important. This is a directory where the intermediate model and tokenizer will be saved.</p>
+<p><strong>Note:</strong> You should checkpoint to somewhere else, Maybe to your drive. and set 
+<code>--save_total_limit 2</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is the training script. you should experiment with arguments.</p>
+<p><code>!python /content/transformers/examples/run_language_modeling.py --help</code></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> tensorboard
+<span class="o">%</span><span class="k">tensorboard</span> --logdir logs
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>You see the maguc here.</p>
+<p>This script can be used to triain most models with for Language modelling.</p>
+<p>Another thing, Observe that you have to directly specify <code>--training_data_file</code> in <code>.txt</code> format. No need to generate any pretraining data! all thanks to the Fast toknizers in used for loading the text.</p>
+<p>Features are created dynamically while starting trainng script.
+However, This is limited to GPUs only. I would love to see a TPU version too.</p>
+<p>Make sure to change batch_sizes according to the GPU you are having. I set to 16 because of 8 GB P4,</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#To train from scratch</span>
+<span class="o">!</span>python /content/transformers/examples/run_language_modeling.py <span class="err">\</span>
+        <span class="o">--</span><span class="n">model_type</span> <span class="n">albert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">v2</span> \
+        <span class="o">--</span><span class="n">config_name</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">tokenizer_name</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">train_data_file</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">corpus</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="n">full</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">eval_data_file</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">corpus</span><span class="o">/</span><span class="n">valid</span><span class="o">/</span><span class="n">full_val</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_dir</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span> \
+        <span class="o">--</span><span class="n">do_train</span> \
+        <span class="o">--</span><span class="n">do_eval</span> \
+        <span class="o">--</span><span class="n">mlm</span> \
+        <span class="o">--</span><span class="n">line_by_line</span> \
+        <span class="o">--</span><span class="n">save_steps</span> <span class="mi">500</span> \
+        <span class="o">--</span><span class="n">logging_steps</span> <span class="mi">500</span> \
+        <span class="o">--</span><span class="n">save_total_limit</span> <span class="mi">2</span> \
+        <span class="o">--</span><span class="n">evaluate_during_training</span> \
+        <span class="o">--</span><span class="n">num_train_epochs</span> <span class="mi">5</span> \
+        <span class="o">--</span><span class="n">per_gpu_eval_batch_size</span> <span class="mi">16</span> \
+        <span class="o">--</span><span class="n">per_gpu_train_batch_size</span> <span class="mi">16</span> \
+        <span class="o">--</span><span class="n">block_size</span> <span class="mi">256</span> \
+        <span class="o">--</span><span class="n">seed</span> <span class="mi">108</span> \
+        <span class="o">--</span><span class="n">should_continue</span> \
+        <span class="o">--</span><span class="n">logging_dir</span> <span class="n">logs</span> \
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+<span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Continuing Training</strong></p>
+
+<pre><code>--model_name_or_path      #Refers to the checkpoint directory
+--overwrite_output_dir    #This is used to continue fro mlast checkpoint</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After a checkpoint, You just need that directory and the corpus files, and toknizer. All configs, models, oprimizers are saved in <code>--output_dir</code> except tokenizer.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#To continue from checkpoint</span>
+<span class="c1">#I have continued from 500 steps here, but you should use the latet saved models</span>
+<span class="o">!</span>python /content/transformers/examples/run_language_modeling.py <span class="err">\</span>
+        <span class="o">--</span><span class="n">model_name_or_path</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span><span class="o">/</span><span class="n">checkpoint</span><span class="o">-</span><span class="mi">500</span> \
+        <span class="o">--</span><span class="n">model_type</span> <span class="n">albert</span><span class="o">-</span><span class="n">base</span><span class="o">-</span><span class="n">v2</span> \
+        <span class="o">--</span><span class="n">config_name</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">tokenizer_name</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span><span class="o">/</span> \
+        <span class="o">--</span><span class="n">train_data_file</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">corpus</span><span class="o">/</span><span class="n">train</span><span class="o">/</span><span class="n">full</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">eval_data_file</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">corpus</span><span class="o">/</span><span class="n">valid</span><span class="o">/</span><span class="n">full_val</span><span class="o">.</span><span class="n">txt</span> \
+        <span class="o">--</span><span class="n">output_dir</span> <span class="o">/</span><span class="n">content</span><span class="o">/</span><span class="n">data_dir</span> \
+        <span class="o">--</span><span class="n">do_train</span> \
+        <span class="o">--</span><span class="n">do_eval</span> \
+        <span class="o">--</span><span class="n">mlm</span> \
+        <span class="o">--</span><span class="n">line_by_line</span> \
+        <span class="o">--</span><span class="n">save_steps</span> <span class="mi">500</span> \
+        <span class="o">--</span><span class="n">logging_steps</span> <span class="mi">500</span> \
+        <span class="o">--</span><span class="n">save_total_limit</span> <span class="mi">2</span> \
+        <span class="o">--</span><span class="n">num_train_epochs</span> <span class="mi">5</span> \
+        <span class="o">--</span><span class="n">evaluate_during_training</span> \
+        <span class="o">--</span><span class="n">per_gpu_eval_batch_size</span> <span class="mi">64</span> \
+        <span class="o">--</span><span class="n">per_gpu_train_batch_size</span> <span class="mi">64</span> \
+        <span class="o">--</span><span class="n">block_size</span> <span class="mi">256</span> \
+        <span class="o">--</span><span class="n">seed</span> <span class="mi">108</span> \
+        <span class="o">--</span><span class="n">should_continue</span> \
+        <span class="o">--</span><span class="n">overwrite_output_dir</span> \
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Saving-for-Uploading">
+<a class="anchor" href="#Saving-for-Uploading" aria-hidden="true"><span class="octicon octicon-link"></span></a>Saving for Uploading<a class="anchor-link" href="#Saving-for-Uploading"> </a>
+</h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since, training is complete, We can now upload models to Huffingface's 
+<a href="https://huggingface.co/models">Models</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir sanskrit_albert
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">atokenizer</span> <span class="o">=</span> <span class="n">AlbertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"/content/data_dir"</span><span class="p">)</span>
+<span class="n">atokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">"/content/sanskrit_albert"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">atokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">atokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#I am using chackoint because os not much training</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AlbertModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"/content/data_dir/checkpoint-500"</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">"/content/sanskrit_albert"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now All the files we want are in a separate folder, Which is all we need to upoad.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Tests">
+<a class="anchor" href="#Tests" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>Tests</strong><a class="anchor-link" href="#Tests"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AlbertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"/content/sanskrit_albert"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">txt</span> <span class="o">=</span> <span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span>
+<span class="n">op</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>'[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]'</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">op</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>torch.Size([30, 1, 768])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This way you can get the embeddings for a sentence</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Uploading-to-Models">
+<a class="anchor" href="#Uploading-to-Models" aria-hidden="true"><span class="octicon octicon-link"></span></a>Uploading to Models<a class="anchor-link" href="#Uploading-to-Models"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://github.com/huggingface/transformers#Quick-tour-of-model-sharing">Instructions to upload a model</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>transformers-cli login
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>2020-05-02 09:31:43.924252: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+
+        _|    _|  _|    _|    _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|_|_|_|    _|_|      _|_|_|  _|_|_|_|
+        _|    _|  _|    _|  _|        _|          _|    _|_|    _|  _|            _|        _|    _|  _|        _|
+        _|_|_|_|  _|    _|  _|  _|_|  _|  _|_|    _|    _|  _|  _|  _|  _|_|      _|_|_|    _|_|_|_|  _|        _|_|_|
+        _|    _|  _|    _|  _|    _|  _|    _|    _|    _|    _|_|  _|    _|      _|        _|    _|  _|        _|
+        _|    _|    _|_|      _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|        _|    _|    _|_|_|  _|_|_|_|
+
+        
+Username: surajp
+Password: 
+Login successful
+Your token: ZhHFKyyolMBDRDCNnueMfmflNjZCNdrndFPvmGXlmuutBGZljhLPwoyZZCCQbGCvkeXLtdapqecqTWlKesnWKsobXWbSsRzpqWSRGvKgMtUbPgclacafFpUfhoOjYnKX 
+
+Your token has been saved to /root/.huggingface/token
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Make sure your model name is the folder name in which this will be uploaded.</p>
+<p>Thus, my model would be <code>surajp/sanskrit_albert</code>,
+but I won't upload this as I have alreasy uploaded one.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>transformers-cli upload /content/sanskrit_albert
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And It's done! Since, I have alreadu uploaded a model, You can load using <code>surajp/sanskrit-base-albert</code></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#this way</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"surajp/albert-base-sanskrit"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"surajp/albert-base-sanskrit"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>
+
+
+
+
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">enc</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"अपि स्वर्णमयी लङ्का न मे लक्ष्मण रोचते । जननी जन्मभूमिश्च स्वर्गादपि गरीयसी ॥"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">enc</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span> <span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>torch.Size([19, 1, 768])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I hope This notebook was helpful.🤗</p>
+
+<pre><code>#StaySafe</code></pre>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This training contained only a little portion of Sanskrit literature. There is a vast amount of literature there which I am collecting. This was only a checkpoint for trainng, I will train more once I collect more data.</p>
+<p>I am also trainig for other Indian Languages on different models (Gujarati, Hindi for now).</p>
+<p>If you know any resources, Please write to me. I'd love to have your contribution.</p>
+<p><strong><code>parmarsuraj99@gmail.com</code></strong></p>
+
+</div>
+</div>
+</div>
+</div>
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"5685305db7dd4826a6f634477ed1aad6": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_dom_classes": [], "_model_name": "HBoxModel", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.5.0", "box_style": "", "layout": "IPY_MODEL_a73dc9e0c8244ac5bf0f9c2501239622", "_model_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_594855c0e7794a81a4105ca035dfd872", "IPY_MODEL_9c0eebfe98fb43bf995dd4579620a48a"]}}, "a73dc9e0c8244ac5bf0f9c2501239622": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "594855c0e7794a81a4105ca035dfd872": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "state": {"_view_name": "ProgressView", "style": "IPY_MODEL_9c9ae9c5d6fb49b792f771d44f1cb41d", "_dom_classes": [], "description": "Downloading: 100%", "_model_name": "IntProgressModel", "bar_style": "success", "max": 604, "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": 604, "_view_count": null, "_view_module_version": "1.5.0", "orientation": "horizontal", "min": 0, "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_aae5609495c34de18edeab885eacb95a"}}, "9c0eebfe98fb43bf995dd4579620a48a": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "state": {"_view_name": "HTMLView", "style": "IPY_MODEL_2ffd94d1b4924ffaa30cc9d37d8585c3", "_dom_classes": [], "description": "", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": " 604/604 [00:00&lt;00:00, 985B/s]", "_view_count": null, "_view_module_version": "1.5.0", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_55fe230c7ef04434ae0f05b864a239c0"}}, "9c9ae9c5d6fb49b792f771d44f1cb41d": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}}, "aae5609495c34de18edeab885eacb95a": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "2ffd94d1b4924ffaa30cc9d37d8585c3": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "_model_module": "@jupyter-widgets/controls"}}, "55fe230c7ef04434ae0f05b864a239c0": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "8b717679193c4252922198dc937cc900": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_dom_classes": [], "_model_name": "HBoxModel", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.5.0", "box_style": "", "layout": "IPY_MODEL_dc350cd33e784b07a2ed42570dfe22f0", "_model_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_baef463d9590443aa7d1c948cf7b81e8", "IPY_MODEL_e94461ec1c244149ba3f79170e50ecdc"]}}, "dc350cd33e784b07a2ed42570dfe22f0": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "baef463d9590443aa7d1c948cf7b81e8": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "state": {"_view_name": "ProgressView", "style": "IPY_MODEL_e9acd7d914c4436f88516e44c0b0aecd", "_dom_classes": [], "description": "Downloading: 100%", "_model_name": "IntProgressModel", "bar_style": "success", "max": 1223921, "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": 1223921, "_view_count": null, "_view_module_version": "1.5.0", "orientation": "horizontal", "min": 0, "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_999905fb16684b25be330c49f2937922"}}, "e94461ec1c244149ba3f79170e50ecdc": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "state": {"_view_name": "HTMLView", "style": "IPY_MODEL_8dedbc093f084206b2fb331d84dcd108", "_dom_classes": [], "description": "", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": " 1.22M/1.22M [00:00&lt;00:00, 3.36MB/s]", "_view_count": null, "_view_module_version": "1.5.0", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_f72aec202d464b54b91f601d5a4b829f"}}, "e9acd7d914c4436f88516e44c0b0aecd": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}}, "999905fb16684b25be330c49f2937922": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "8dedbc093f084206b2fb331d84dcd108": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "_model_module": "@jupyter-widgets/controls"}}, "f72aec202d464b54b91f601d5a4b829f": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "b3a6767e31364e488f777c08ab48dc2d": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_dom_classes": [], "_model_name": "HBoxModel", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.5.0", "box_style": "", "layout": "IPY_MODEL_ac4e965b96d04122ac6f22da682c49fe", "_model_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_f40ca8b70bee403a835f10bc923d72ba", "IPY_MODEL_57640e5990034a8b84e4497e874ebb7e"]}}, "ac4e965b96d04122ac6f22da682c49fe": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "f40ca8b70bee403a835f10bc923d72ba": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "state": {"_view_name": "ProgressView", "style": "IPY_MODEL_e24a5ea483874144833ef775693a37c0", "_dom_classes": [], "description": "Downloading: 100%", "_model_name": "IntProgressModel", "bar_style": "success", "max": 156, "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": 156, "_view_count": null, "_view_module_version": "1.5.0", "orientation": "horizontal", "min": 0, "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_86b394f05f954dc8b238492b57aae7da"}}, "57640e5990034a8b84e4497e874ebb7e": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "state": {"_view_name": "HTMLView", "style": "IPY_MODEL_ddb2dbfefd9741ac9b1b2687457e2336", "_dom_classes": [], "description": "", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": " 156/156 [00:02&lt;00:00, 74.9B/s]", "_view_count": null, "_view_module_version": "1.5.0", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_0255ff63acbc46aa8aae0b7ffb98e4af"}}, "e24a5ea483874144833ef775693a37c0": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}}, "86b394f05f954dc8b238492b57aae7da": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "ddb2dbfefd9741ac9b1b2687457e2336": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "_model_module": "@jupyter-widgets/controls"}}, "0255ff63acbc46aa8aae0b7ffb98e4af": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "0cdac547b6f34659b48c7878fdb070dc": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_dom_classes": [], "_model_name": "HBoxModel", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.5.0", "box_style": "", "layout": "IPY_MODEL_b1cef3e7f560418485e0484c39ed165b", "_model_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_d354587cfcf749048a989fe94d319875", "IPY_MODEL_f5bf6003938c4f2faa319a23e00fddf4"]}}, "b1cef3e7f560418485e0484c39ed165b": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "d354587cfcf749048a989fe94d319875": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "state": {"_view_name": "ProgressView", "style": "IPY_MODEL_33b467872d3047cf82b6c8979d36b140", "_dom_classes": [], "description": "Downloading: 100%", "_model_name": "IntProgressModel", "bar_style": "success", "max": 218, "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": 218, "_view_count": null, "_view_module_version": "1.5.0", "orientation": "horizontal", "min": 0, "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_82e4246fefe348ec9142f405fe81666b"}}, "f5bf6003938c4f2faa319a23e00fddf4": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "state": {"_view_name": "HTMLView", "style": "IPY_MODEL_35e0f5f28bd0410d8bd9cc06ffdd5684", "_dom_classes": [], "description": "", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": " 218/218 [00:01&lt;00:00, 144B/s]", "_view_count": null, "_view_module_version": "1.5.0", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_bc24a136e6e1470eb1e9b37d843b858e"}}, "33b467872d3047cf82b6c8979d36b140": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}}, "82e4246fefe348ec9142f405fe81666b": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "35e0f5f28bd0410d8bd9cc06ffdd5684": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "_model_module": "@jupyter-widgets/controls"}}, "bc24a136e6e1470eb1e9b37d843b858e": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "7c3a5caba9864e28bea96b9f77b9d125": {"model_module": "@jupyter-widgets/controls", "model_name": "HBoxModel", "state": {"_view_name": "HBoxView", "_dom_classes": [], "_model_name": "HBoxModel", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.5.0", "box_style": "", "layout": "IPY_MODEL_38635f0ec0d740f5bae36f4112f17d0f", "_model_module": "@jupyter-widgets/controls", "children": ["IPY_MODEL_4ee756eb4c854422bd42a3a662544cac", "IPY_MODEL_ef510f7e2c8948b791f2acb8ca2c34dd"]}}, "38635f0ec0d740f5bae36f4112f17d0f": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "4ee756eb4c854422bd42a3a662544cac": {"model_module": "@jupyter-widgets/controls", "model_name": "IntProgressModel", "state": {"_view_name": "ProgressView", "style": "IPY_MODEL_6ea8bd25932b476286d061f3d13565f5", "_dom_classes": [], "description": "Downloading: 100%", "_model_name": "IntProgressModel", "bar_style": "success", "max": 47764140, "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": 47764140, "_view_count": null, "_view_module_version": "1.5.0", "orientation": "horizontal", "min": 0, "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_3c7eb17e6a9e4433b7a1f16a537c1918"}}, "ef510f7e2c8948b791f2acb8ca2c34dd": {"model_module": "@jupyter-widgets/controls", "model_name": "HTMLModel", "state": {"_view_name": "HTMLView", "style": "IPY_MODEL_7e19557974be4bf9804dc7c28d10bb63", "_dom_classes": [], "description": "", "_model_name": "HTMLModel", "placeholder": "\u200b", "_view_module": "@jupyter-widgets/controls", "_model_module_version": "1.5.0", "value": " 47.8M/47.8M [00:01&lt;00:00, 46.6MB/s]", "_view_count": null, "_view_module_version": "1.5.0", "description_tooltip": null, "_model_module": "@jupyter-widgets/controls", "layout": "IPY_MODEL_3692ceba9a384ab0a26625d2936cb195"}}, "6ea8bd25932b476286d061f3d13565f5": {"model_module": "@jupyter-widgets/controls", "model_name": "ProgressStyleModel", "state": {"_view_name": "StyleView", "_model_name": "ProgressStyleModel", "description_width": "initial", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "bar_color": null, "_model_module": "@jupyter-widgets/controls"}}, "3c7eb17e6a9e4433b7a1f16a537c1918": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}, "7e19557974be4bf9804dc7c28d10bb63": {"model_module": "@jupyter-widgets/controls", "model_name": "DescriptionStyleModel", "state": {"_view_name": "StyleView", "_model_name": "DescriptionStyleModel", "description_width": "", "_view_module": "@jupyter-widgets/base", "_model_module_version": "1.5.0", "_view_count": null, "_view_module_version": "1.2.0", "_model_module": "@jupyter-widgets/controls"}}, "3692ceba9a384ab0a26625d2936cb195": {"model_module": "@jupyter-widgets/base", "model_name": "LayoutModel", "state": {"_view_name": "LayoutView", "grid_template_rows": null, "right": null, "justify_content": null, "_view_module": "@jupyter-widgets/base", "overflow": null, "_model_module_version": "1.2.0", "_view_count": null, "flex_flow": null, "width": null, "min_width": null, "border": null, "align_items": null, "bottom": null, "_model_module": "@jupyter-widgets/base", "top": null, "grid_column": null, "overflow_y": null, "overflow_x": null, "grid_auto_flow": null, "grid_area": null, "grid_template_columns": null, "flex": null, "_model_name": "LayoutModel", "justify_items": null, "grid_row": null, "max_height": null, "align_content": null, "visibility": null, "align_self": null, "height": null, "min_height": null, "padding": null, "grid_auto_rows": null, "grid_gap": null, "max_width": null, "order": null, "_view_module_version": "1.2.0", "grid_template_areas": null, "object_position": null, "object_fit": null, "grid_auto_columns": null, "margin": null, "display": null, "left": null}}}
+</script>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="parmarsuraj99/suraj-parmar"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/suraj-parmar/jupyter/nlp/huggingface/2020/05/02/SanskritALBERT.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/suraj-parmar/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/suraj-parmar/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Committing to ML, One post at a time.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/parmarsuraj99" title="parmarsuraj99"><svg class="svg-icon grey"><use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/parmarsuraj99" title="parmarsuraj99"><svg class="svg-icon grey"><use xlink:href="/suraj-parmar/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
