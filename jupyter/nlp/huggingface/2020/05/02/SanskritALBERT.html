@@ -91,7 +91,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      8 min read
+      9 min read
     
 </span></p>
 
@@ -170,14 +170,6 @@ window.onload = wrap_img;
 </div>
     
 
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><a href="https://colab.research.google.com/github/parmarsuraj99/suraj-parmar/blob/master/_notebooks/2020-05-02-SanskritALBERT.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a></p>
-
-</div>
-</div>
-</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -364,7 +356,8 @@ and <a href="https://github.com/cltk/cltk">CLTK</a> from which I am currently co
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir corpus #directory <span class="k">for</span> <span class="nv">sac</span><span class="o">=</span>ving all corpus in a single directory. You can save it anywhere
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>mkdir corpus 
+<span class="c1">#directory for sac=ving all corpus in a single directory. You can save it anywhere</span>
 
 <span class="c1">#From Kagle</span>
 <span class="o">!</span>kaggle datasets download -d disisbig/sanskrit-wikipedia-articles
@@ -619,7 +612,7 @@ Wall time: 10 µs
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>This is a very beautiful Shlok ❤️, Let's just pray for this 🙏.
-Do search online if you are interested!</p>
+Do search the quotes used in this notebook, I am sure, you will love them!</p>
 
 </div>
 </div>
@@ -754,7 +747,7 @@ Do search online if you are interested!</p>
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः। न चैनं क्लेदयन्त्यापो न शोषयति मारुतः॥"</span><span class="p">)</span>
 <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
 </pre></div>
 
@@ -770,7 +763,7 @@ Do search online if you are interested!</p>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>'[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]'</pre>
+<pre>'[CLS] नैनं छिन्दन्ति शस्त्राणि नैनं दहति पावकः। न चैनं क्लेदयन्त्यापो न शोषयति मारुतः॥[SEP]'</pre>
 </div>
 
 </div>
@@ -781,6 +774,14 @@ Do search online if you are interested!</p>
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Looks like, the tokenizer is working</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1016,8 +1017,8 @@ a reason maybe that Sanskrit does not have 'Casing'. and the word has suffixes i
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You see the maguc here.</p>
-<p>This script can be used to triain most models with for Language modelling.</p>
+<p>You see the magic here.</p>
+<p>This script can be used to train most models with for Language modelling.</p>
 <p>Another thing, Observe that you have to directly specify <code>--training_data_file</code> in <code>.txt</code> format. No need to generate any pretraining data! all thanks to the Fast toknizers in used for loading the text.</p>
 <p>Features are created dynamically while starting trainng script.
 However, This is limited to GPUs only. I would love to see a TPU version too.</p>
@@ -1193,6 +1194,24 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>('/content/sanskrit_albert/spiece.model',
+ '/content/sanskrit_albert/special_tokens_map.json',
+ '/content/sanskrit_albert/added_tokens.json')</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
     
 
@@ -1203,7 +1222,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">atokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span> <span class="o">=</span> <span class="n">atokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"क्षमया दयया प्रेम्णा सूनृतेनार्जवेन च। वशीकुर्याज्जगत्सर्वं विनयेन च सेवया॥"</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">atokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">))</span>
 </pre></div>
 
@@ -1217,7 +1236,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]
+<pre>[CLS] क्षमया दयया प्रेम्णा सूनृतेनार्जवेन च। वशीकुर्याज्जगत्सर्वं विनयेन च सेवया॥[SEP]
 </pre>
 </div>
 </div>
@@ -1288,7 +1307,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">txt</span> <span class="o">=</span> <span class="s2">"ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥"</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">txt</span> <span class="o">=</span> <span class="s2">"चरन्मार्गान्विजानाति ।"</span>
 <span class="n">op</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
 </pre></div>
 
@@ -1306,7 +1325,8 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">op</span>
+<span class="c1">#See howw it's tokenized!</span>
 </pre></div>
 
     </div>
@@ -1321,7 +1341,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>'[CLS] ॐ सर्वे भवन्तु सुखिनः। सर्वे सन्तु निरामयाः। सर्वे भद्राणि पश्यन्तु। मा कश्चित् दुःख भाग्भवेत्॥ ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]'</pre>
+<pre>[3, 15, 4280, 1345, 82, 177, 13866, 6, 4]</pre>
 </div>
 
 </div>
@@ -1332,6 +1352,47 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 </div>
     
 
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">[:</span><span class="mi">5</span><span class="p">]),</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">op</span><span class="p">[</span><span class="mi">5</span><span class="p">:])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>('[CLS] चरन्मार्गान्', 'विजानाति ।[SEP]')</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is the reason I set <code>do_lower_case:False</code>, and <code>keep_accents:True</code></p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -1383,7 +1444,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This way you can get the embeddings for a sentence</p>
+<p>This way you can get the embeddings for a sentence. Check <a href="https://resanskrit.com/sanskrit-shlok-popular-quotes-meaning-hindi-english/">ReSanskrit</a> for some beautiful shlok quotes.</p>
 
 </div>
 </div>
@@ -1558,6 +1619,23 @@ but I won't upload this as I have alreasy uploaded one.</p>
 </div>
     
 
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">"./"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
@@ -1579,6 +1657,54 @@ but I won't upload this as I have alreasy uploaded one.</p>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>I am trying to find if the structure of language can have any effect on trainng, More structured language=&gt;faster training and if this can be useful for cross-lingual learning?</p>
+<p>What are you thoughts about this?</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"surajp/albert-base-sanskrit"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">"surajp/albert-base-sanskrit"</span><span class="p">)</span>
+
+<span class="n">enc</span><span class="o">=</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ॐ सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः । सर्वे भद्राणि पश्यन्तु मा कश्चिद्दुःखभाग्भवेत् । ॐ शान्तिः शान्तिः शान्तिः ॥"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">enc</span><span class="p">))</span>
+
+<span class="n">ps</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[CLS] ॐ सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामयाः । सर्वे भद्राणि पश्यन्तु मा कश्चिद्दुःखभाग्भवेत् । ॐ शान्तिः शान्तिः शान्तिः ॥[SEP]
+torch.Size([28, 1, 768])
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
 </div>
 
 
