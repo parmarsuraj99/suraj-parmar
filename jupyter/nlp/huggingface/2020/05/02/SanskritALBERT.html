@@ -145,7 +145,7 @@ window.onload = wrap_img;
 </li>
 <li class="toc-entry toc-h1"><a href="#Huggingface-Training">Huggingface Training </a>
 <ul>
-<li class="toc-entry toc-h2"><a href="#Model-Tokenizer-Configurtion">Model-Tokenizer Configurtion </a></li>
+<li class="toc-entry toc-h2"><a href="#Model-Tokenizer-Configuration">Model-Tokenizer Configuration </a></li>
 </ul>
 </li>
 <li class="toc-entry toc-h1"><a href="#Saving-for-Uploading">Saving for Uploading </a>
@@ -296,7 +296,7 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>I have used Sanskrit Corpus from Kaggle dataset. Feel free to skip and use your own ddataset. The trainig data needs to be in a .txt file. and I have also used Evaluation using the same dataset.</p>
+<p>I have used Sanskrit Corpus from Kaggle dataset. Feel free to skip and use your own ddataset. The trainng data needs to be in a .txt file. and I have also used Evaluation using the same dataset.</p>
 <p>I need Kaggle API to download the dataset. You can load your text corpus from anywhere.</p>
 
 </div>
@@ -305,8 +305,8 @@ window.onload = wrap_img;
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You can download corpus for your language from <a href="https://traces1.inria.fr/oscar">https://traces1.inria.fr/oscar</a>.</p>
-<p>I have used data fro mthere too, and appended the data to corpus from Kaggle.</p>
+<p>You can download a corpus for your language from <a href="https://traces1.inria.fr/oscar">https://traces1.inria.fr/oscar</a>.</p>
+<p>I have used data from there too and appended the data to a corpus from Kaggle.</p>
 
 </div>
 </div>
@@ -343,7 +343,7 @@ window.onload = wrap_img;
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><a href="https://www.kaggle.com/disisbig/sanskrit-wikipedia-articles">Kaggle dataset link</a></p>
-<p>Thanks to <a href="https://github.com/goru001/inltk">inltk</a> for wikipedia dumps
+<p>Thanks to <a href="https://github.com/goru001/inltk">inltk</a> for Wikipedia dumps
 and <a href="https://github.com/cltk/cltk">CLTK</a> from which I am currently collecting Sanskrit scraps from open sources.</p>
 
 </div>
@@ -568,8 +568,8 @@ and <a href="https://github.com/cltk/cltk">CLTK</a> from which I am currently co
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Make sure to checkout the Fast Tokenizers from Huggingface, Tis is really Fast!
-You can compare with sentencepiece.</p>
+<p>Make sure to check out the Fast Tokenizers from Huggingface, This is really Fast!
+You can compare it with sentencepiece.</p>
 
 </div>
 </div>
@@ -785,8 +785,8 @@ Do search the quotes used in this notebook, I am sure, you will love them!</p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Model-Tokenizer-Configurtion">
-<a class="anchor" href="#Model-Tokenizer-Configurtion" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model-Tokenizer Configurtion<a class="anchor-link" href="#Model-Tokenizer-Configurtion"> </a>
+<h2 id="Model-Tokenizer-Configuration">
+<a class="anchor" href="#Model-Tokenizer-Configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Model-Tokenizer Configuration<a class="anchor-link" href="#Model-Tokenizer-Configuration"> </a>
 </h2>
 </div>
 </div>
@@ -869,7 +869,7 @@ Just take a look ar left panel for Model Architectures</p>
 
 
 <span class="c1">#Configuration for tokenizer.</span>
-<span class="c1">#Note I havve set do_lower_case: False, and keep_accents:True</span>
+<span class="c1">#Note: I set do_lower_case: False, and keep_accents:True</span>
 
 <span class="n">tokenizer_config</span> <span class="o">=</span> <span class="p">{</span>
 	<span class="s2">"max_len"</span><span class="p">:</span> <span class="mi">512</span><span class="p">,</span>
@@ -1488,7 +1488,7 @@ However, This is limited to GPUs only. I would love to see a TPU version too.</p
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Make sure your model name is the folder name in which this will be uploaded.</p>
 <p>Thus, my model would be <code>surajp/sanskrit_albert</code>,
-but I won't upload this as I have alreasy uploaded one.</p>
+but I won't upload this as I have already uploaded one.</p>
 
 </div>
 </div>
@@ -1632,7 +1632,7 @@ but I won't upload this as I have alreasy uploaded one.</p>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This training contained only a little portion of Sanskrit literature. There is a vast amount of literature there which I am collecting. This was only a checkpoint for trainng, I will train more once I collect more data.</p>
+<p>This training contained only a little portion of Sanskrit literature. There is a huge amount of literature there I am collecting. This was only a checkpoint for trainng, I will train more once I collect more data.</p>
 <p>I am also trainig for other Indian Languages on different models (Gujarati, Hindi for now).</p>
 <p>If you know any resources, Please write to me.</p>
 <p><strong><code>parmarsuraj99@gmail.com</code></strong></p>
